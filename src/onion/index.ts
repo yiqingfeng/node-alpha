@@ -6,12 +6,10 @@ import http, {
 } from 'http';
 import https from 'https';
 import Context from './context';
-
 class Union {
 	public isHttps: boolean;
 	public tlsOptions: http.ServerOptions | null;
 	public middlewares: Function[];
-	public callback: Function;
 	constructor({
 		isHttps = false,
 		tlsOptions = null,
@@ -20,9 +18,6 @@ class Union {
 		this.isHttps = isHttps;
 		this.tlsOptions = tlsOptions;
 		this.middlewares = middlewares;
-		this.callback = function (ctx: Object) {
-			console.log(ctx);
-		}
 	}
 	/**
 	 * @description 请求拦截处理，用于添加中间件
@@ -37,7 +32,7 @@ class Union {
 		let server: Server;
 		const listener: http.RequestListener = async (req, res) => {
 			// 创建上下文
-			const ctx = this.createContext(req, res)
+			const ctx: Context = this.createContext(req, res)
 			const fn = this.compose(this.middlewares)
 
 			await fn(ctx);
@@ -55,15 +50,8 @@ class Union {
 	/**
 	 * @description 创建待执行的上下文环境
 	 */
-	createContext(req: http.IncomingMessage, res: http.ServerResponse): object {
-		const ctx = Object.create(context);
-		ctx.request = Object.create(req);
-		ctx.response = Object.create(res);
-
-		// 保留原始数据
-		ctx.req = ctx.request.req = req;
-		ctx.res = ctx.response.res = res;
-		return ctx;
+	createContext(req: http.IncomingMessage, res: http.ServerResponse): Context {
+		return new Context(Object.create(req), Object.create(res));
 	}
 	/**
 	 * @description 函数组合处理
