@@ -17,6 +17,26 @@
 // 	console.error(error);
 // })
 
-const ssl = require('./dist/modules/ssl');
+// const ssl = require('./dist/modules/ssl');
 
-console.log(ssl.default.check());
+// console.log(ssl.default.check());
+
+const Onion = require('./dist/onion/index');
+
+const app = new Onion.default()
+
+app.use((ctx, next) => {
+	ctx.body = 'get request';
+	next();
+})
+app.use((ctx, next) => {
+	ctx.body += Date.now();
+	next();
+})
+app.use((ctx, next) => {
+	console.log(ctx.body);
+	next();
+})
+
+app.listen(5000);
+console.log('服务启动');

@@ -8,4 +8,4 @@ const response: Response = {
 		this._body = data;
 	},
 };
-export default request;
+export default response;

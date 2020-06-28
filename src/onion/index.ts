@@ -13,11 +13,10 @@ class Union {
 	constructor({
 		isHttps = false,
 		tlsOptions = null,
-		middlewares = [],
 	} = {}) {
 		this.isHttps = isHttps;
 		this.tlsOptions = tlsOptions;
-		this.middlewares = middlewares;
+		this.middlewares = [];
 	}
 	/**
 	 * @description 请求拦截处理，用于添加中间件
