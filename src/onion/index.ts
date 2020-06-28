@@ -6,6 +6,8 @@ import http, {
 } from 'http';
 import https from 'https';
 import Context from './context';
+import Router from './router';
+
 class Union {
 	public isHttps: boolean;
 	public tlsOptions: http.ServerOptions | null;
@@ -17,6 +19,9 @@ class Union {
 		this.isHttps = isHttps;
 		this.tlsOptions = tlsOptions;
 		this.middlewares = [];
+	}
+	get Router() {
+		return Router;
 	}
 	/**
 	 * @description 请求拦截处理，用于添加中间件
