@@ -14,3 +14,8 @@ function readFile(filePath: string, options: object, isSync: boolean = true) {
 function writeFile() {
 
 }
+
+export default {
+	readFile,
+	writeFile,
+}

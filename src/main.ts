@@ -5,7 +5,6 @@ import https from 'https';
 
 import ssl from './modules/ssl';
 
-
 let startDate: number = Date.now();
 // 判断根证书是否有权限访问
 fs.access('ca.crt', function (error) {

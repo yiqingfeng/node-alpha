@@ -4,6 +4,7 @@
  */
 import fs from 'fs';
 import path from 'path';
+import utils from '../core/utils';
 
 const ECA = {
 	key: `
@@ -64,9 +65,34 @@ function registerHosts(domain: string) {
 
 }
 
-interface Cert {
-	cert: string | undefined; // 公钥
-	key: string | undefined; // 私钥
+/**
+ * @description 证书版本检查
+ * 如果当前版本较低 返回 -1 ，如果相同则返回 0 ，版本较高则返回 1
+ */
+function checkVersion(): number {
+	let base: string[] = '1.0.1'.split('.');
+	let version: string = utils.cpExec('openssl version').data;
+	version = (version.match(/\bopenssl[^\d]+([\d|\.]+)/i) || [])[1] || '';
+	// 判断当前 openssl 版本是否高于指定基础版本
+	return version.split('.')
+		.reduce((sum, item, index) => {
+			let v: number = +base[index] || 0;
+			return sum !== 0 ?
+				sum :
+				v > +item ?
+				-1 :
+				v === +item ? 0 : 1;
+		}, 0)
+}
+
+/**
+ * @description 生成根证书
+ */
+function generateCert():Cert {
+	return {
+		key: '',
+		cert: '',
+	}
 }
 
 /**
@@ -97,6 +123,8 @@ export default {
 		key: APP.key,
 		cert: APP.cert,
 	},
+	check: checkVersion,
+	generate: generateCert,
 	registerHosts,
 	export: exportCert,
 }
