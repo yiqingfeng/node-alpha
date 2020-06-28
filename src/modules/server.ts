@@ -13,9 +13,11 @@ function createServer() {
 		ssl.app :
 		ssl.generate();
 	let port = 443;
-	const app = new Onion();
-	https.createServer(cert, app.listen)
-		.listen(port, '0.0.0.0');
+	const app = new Onion({
+		isHttps: true,
+		tlsOptions: cert,
+	});
+	app.listen(port, '0.0.0.0');
 }
 
 export default createServer;

@@ -8,14 +8,18 @@ import https from 'https';
 import Context from './context';
 import Router from './router';
 
+interface UnionOptions {
+	isHttps: boolean;
+	tlsOptions: Cert | undefined;
+}
 class Union {
 	public isHttps: boolean;
-	public tlsOptions: http.ServerOptions | null;
+	public tlsOptions: Cert | undefined;
 	public middlewares: Function[];
 	constructor({
 		isHttps = false,
-		tlsOptions = null,
-	} = {}) {
+		tlsOptions,
+	} = {} as UnionOptions) {
 		this.isHttps = isHttps;
 		this.tlsOptions = tlsOptions;
 		this.middlewares = [];
@@ -35,7 +39,7 @@ class Union {
 	/**
 	 * @description 提供监听处理
 	 */
-	listen() {
+	listen(port?: number | undefined, hostname?: string | undefined, backlog?: number | undefined, listeningListener?: (() => void) | undefined) {
 		let server: Server;
 		const listener: http.RequestListener = async (req, res) => {
 			// 创建上下文
