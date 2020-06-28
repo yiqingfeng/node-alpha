@@ -20,8 +20,11 @@ class Union {
 		this.tlsOptions = tlsOptions;
 		this.middlewares = [];
 	}
-	get Router() {
-		return Router;
+	/**
+	 * @description 创建路由
+	 */
+	createRouter(): Router {
+		return new Router();
 	}
 	/**
 	 * @description 请求拦截处理，用于添加中间件
@@ -79,4 +82,5 @@ class Union {
 	}
 }
 
+export const Routers = Router;
 export default Union;

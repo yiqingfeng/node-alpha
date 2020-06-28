@@ -24,15 +24,22 @@
 const Onion = require('./dist/onion/index');
 
 const app = new Onion.default()
+const router = app.createRouter()
 
-app.use((ctx, next) => {
-	ctx.body = 'get request';
-	next();
-})
-app.use((ctx, next) => {
-	ctx.body += Date.now();
-	next();
-})
+router.get('/', async ctx => { ctx.body = 'index page' })
+router.get('/home', async ctx => { ctx.body = 'home page' })
+router.post('/', async ctx => { ctx.body = 'post index' })
+
+app.use(router.routes())
+
+// app.use((ctx, next) => {
+// 	ctx.body = 'get request';
+// 	next();
+// })
+// app.use((ctx, next) => {
+// 	ctx.body += Date.now();
+// 	next();
+// })
 app.use((ctx, next) => {
 	console.log(ctx.body);
 	next();
