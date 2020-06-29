@@ -11,7 +11,7 @@ import Onion from '../onion/index';
 function createServer() {
 	const cert: Cert = ssl.check() < 0 ?
 		ssl.app :
-		ssl.generate();
+		ssl.gen();
 	let port = 443;
 	const app = new Onion({
 		isHttps: true,

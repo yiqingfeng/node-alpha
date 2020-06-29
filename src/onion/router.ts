@@ -26,7 +26,7 @@ class Router implements Router {
 	}
 
 	post(path: string, middleware: listener) {
-		this.register(path, 'post', middleware)
+		this.register(path, 'post', middleware);
 	}
 
 	routes(): listener {

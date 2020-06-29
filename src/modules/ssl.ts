@@ -5,6 +5,11 @@
 import fs from 'fs';
 import path from 'path';
 import utils from '../core/utils';
+import {
+	isArray
+} from 'util';
+
+const DOMAINS = ['fe.com', 'ceshi113.com', 'ceshi112.com', 'fxiaoke.com'];
 
 const ECA = {
 	key: `
@@ -86,9 +91,30 @@ function checkVersion(): number {
 }
 
 /**
+ * @description 生成证书的私钥
+ */
+function genKey(): string {
+	return utils.cpExec('openssl ecparam -genkey -name prime256v1').data;
+}
+
+/**
+ * @description 生成证书签名请求
+ * @param {string} key 证书私钥
+ * @param {string | string[]} domains 证书可访问域名
+ */
+function genCsr(key ? : string, domains ? : string | string[]): string {
+	key = key || genKey();
+	if (typeof domains !== 'string') {
+		domains = (domains || DOMAINS)[0];
+	}
+	const cmdStr = `openssl req -new -key <(echo '${key}') -subj "/CN=${domains}"`;
+	return utils.cpExec(cmdStr).data;
+}
+
+/**
  * @description 生成根证书
  */
-function generateCert():Cert {
+function genCert(): Cert {
 	return {
 		key: '',
 		cert: '',
@@ -124,7 +150,7 @@ export default {
 		cert: APP.cert,
 	},
 	check: checkVersion,
-	generate: generateCert,
+	gen: genCert,
 	registerHosts,
 	export: exportCert,
 }
