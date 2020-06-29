@@ -37,10 +37,10 @@ class Union {
 		this.middlewares.push(middleware);
 	}
 	/**
-	 * @description 提供监听处理
+	 * @description 获取服务器监听者
+	 * 便于外部创建服务器，直接使用 app 作为 listener
 	 */
-	listen(port?: number | undefined, hostname?: string | undefined, backlog?: number | undefined, listeningListener?: (() => void) | undefined) {
-		let server: Server;
+	getListener(): http.RequestListener {
 		const listener: http.RequestListener = async (req, res) => {
 			// 创建上下文
 			const ctx: Context = this.createContext(req, res)
@@ -51,6 +51,14 @@ class Union {
 			// 响应
 			res.end(ctx.body);
 		};
+		return listener;
+	}
+	/**
+	 * @description 提供监听处理
+	 */
+	listen(port?: number | undefined, hostname?: string | undefined, backlog?: number | undefined, listeningListener?: (() => void) | undefined) {
+		let server: Server;
+		const listener: http.RequestListener = this.getListener();
 		if (this.isHttps && this.tlsOptions) {
 			server = https.createServer(this.tlsOptions, listener);
 		} else {
