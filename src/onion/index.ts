@@ -7,6 +7,9 @@ import http, {
 import https from 'https';
 import Context from './context';
 import Router from './router';
+import { type } from 'os';
+
+type middlewareCb = (ctx: Context, next: Function) => void;
 
 interface UnionOptions {
 	isHttps: boolean;
@@ -15,7 +18,7 @@ interface UnionOptions {
 class Union {
 	public isHttps: boolean;
 	public tlsOptions: Cert | undefined;
-	public middlewares: Function[];
+	public middlewares: middlewareCb[];
 	constructor({
 		isHttps = false,
 		tlsOptions,
@@ -33,7 +36,7 @@ class Union {
 	/**
 	 * @description 请求拦截处理，用于添加中间件
 	 */
-	use(middleware: Function) {
+	use(middleware: middlewareCb) {
 		this.middlewares.push(middleware);
 	}
 	/**
@@ -75,8 +78,8 @@ class Union {
 	/**
 	 * @description 函数组合处理
 	 */
-	compose(middlewares: Function[]): Function {
-		return function (ctx: object) {
+	compose(middlewares: middlewareCb[]): Function {
+		return function (ctx: Context) {
 			return dispatch(0)
 
 			function dispatch(i: number) {
@@ -94,5 +97,14 @@ class Union {
 	}
 }
 
-export const Routers = Router;
 export default Union;
+export const Routers = Router;
+export function createListener (callback ?: (app: Union) => void): http.RequestListener {
+	const app = new Union();
+
+	if (typeof callback === 'function') {
+		callback(app);
+	}
+
+	return app.getListener.bind(app);
+}

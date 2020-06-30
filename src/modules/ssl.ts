@@ -2,12 +2,8 @@
  * @description https 证书
  * @date 2020-06-24
  */
-import fs from 'fs';
 import path from 'path';
 import utils from '../core/utils';
-import {
-	isArray
-} from 'util';
 
 const DOMAINS = ['fe.com', 'ceshi113.com', 'ceshi112.com', 'fxiaoke.com'];
 
@@ -112,13 +108,57 @@ function genCsr(key ? : string, domains ? : string | string[]): string {
 }
 
 /**
- * @description 生成根证书
+ * @description 获取额外配置信息
+ * 主要是多 DNS，多域名
  */
-function genCert(): Cert {
-	return {
-		key: '',
-		cert: '',
+function getExt(domains ? : string | string[]): string {
+	if (typeof domains !== 'string') {
+		domains = (domains || DOMAINS)
+			.map(item => `DNS：*.${item}`)
+			.join(', ')
 	}
+	return [
+		'basicConstraints = CA:false',
+		`subjectAltName${domains}`,
+		'', // 确保设置好配置之后强制换行
+	].join('\n');
+}
+
+/**
+ * @description 注册证书
+ * @param {string} csr 公钥
+ * @param {string} ext 补充配置信息
+ */
+function signCert(csr ? : string, ext ? : string): string {
+	csr = csr || genCsr();
+	ext = ext || getExt();
+	var cmdStr = [
+		'openssl x509 -req -sha256 -days 128',
+		'-CAcreateserial -CAserial "/dev/null" -set_serial 0',
+		`-CA <(echo "${ECA.cert}")`,
+		`-CAkey <(echo "${ECA.key}")`,
+		`-in <(echo "${csr}")`,
+		`-extfile <(echo "${ext}")`,
+	].join(' ');
+	return utils.cpExec(cmdStr).data;
+}
+
+/**
+ * @description 获取 SSL CA 证书
+ */
+function getCert(key ? : string, domains ? : string, ext ? : string): Cert {
+	if (checkVersion() < 0) {
+		return {
+			key: APP.key,
+			cert: APP.cert,
+		}
+	}
+	key = key || genKey();
+	ext = ext || getExt();
+	return {
+		key,
+		cert: signCert(genCsr(key, domains), ext),
+	};
 }
 
 /**
@@ -145,12 +185,7 @@ function exportCert(fileName: string = 'cert.crt', cert: Cert = {
 }
 
 export default {
-	app: {
-		key: APP.key,
-		cert: APP.cert,
-	},
-	check: checkVersion,
-	gen: genCert,
-	registerHosts,
-	export: exportCert,
+	getCert,
+	// export: exportCert,
+	// registerHosts,
 }
