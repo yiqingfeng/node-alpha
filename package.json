@@ -1,20 +1,39 @@
 {
-	"name": "node-alpha",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"start": "node index.js",
-		"build": "tsc"
-	},
-	"keywords": [
-		"typescript",
-		"alpha"
-	],
-	"author": "nimo",
-	"license": "MIT",
-	"devDependencies": {
-		"@types/node": "^14.0.13",
-		"typescript": "^3.9.5"
-	}
+    "name": "node-alpha",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "ts-node src/index.ts",
+        "build": "tsc",
+        "lint": "eslint src/"
+    },
+    "keywords": [
+        "typescript",
+        "alpha"
+    ],
+    "author": "nimo",
+    "license": "MIT",
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^9.0.1",
+        "@commitlint/config-conventional": "^9.0.1",
+        "@types/node": "^14.0.14",
+        "@typescript-eslint/eslint-plugin": "^3.5.0",
+        "@typescript-eslint/parser": "^3.5.0",
+        "eslint": "^7.4.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "husky": "^4.2.5",
+        "ts-node": "^8.10.2",
+        "typescript": "^3.9.6"
+    }
 }
