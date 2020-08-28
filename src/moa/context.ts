@@ -11,6 +11,7 @@ import Response from './response';
 class ContextClass implements moa.Context {
     request: moa.Request;
     response: moa.Response;
+
     constructor(public req: http.IncomingMessage, public res: http.ServerResponse) {
         this.request = new Request(req);
         this.response = new Response(res);

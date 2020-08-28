@@ -1,9 +1,21 @@
-import utils from './utils';
+import http from 'http';
+import moa from 'moa';
+import Moa from './moa';
 
-console.log(utils.cpExec('echo hello').data);
+const app = new Moa();
 
-function hi(name: string): string {
-    return `hi, ${name}!`;
-}
+const router = app.createRoute();
 
-console.log(hi('Jack'));
+router.get('/test', async function (ctx: moa.Context, next: () => void) {
+    ctx.body = 'hello test!';
+    next();
+});
+
+app.use(router.routes());
+
+app.use(async function (ctx: moa.Context, next: () => void) {
+    ctx.body += 'end';
+    next();
+});
+
+app.createServer(http, 3000);

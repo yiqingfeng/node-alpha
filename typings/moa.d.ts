@@ -24,7 +24,7 @@ declare module 'moa' {
         method: string;
     }
 
-    export type listener = (ctx: Context, next: listener) => void;
+    export type listener = (ctx: Context, next: () => void) => void;
 
     interface Stack {
         path: string;
@@ -33,7 +33,7 @@ declare module 'moa' {
     }
 
     interface Router {
-        stacks: Stack[];
+        _stacks: Stack[];
         register: (path: string, method: string, middleware: listener) => void;
         get: (path: string, middleware: listener) => void;
         post: (path: string, middleware: listener) => void;

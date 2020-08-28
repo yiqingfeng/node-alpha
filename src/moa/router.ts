@@ -4,10 +4,10 @@
 import moa from 'moa';
 
 class Router implements moa.Router {
-    public stacks: moa.Stack[];
+    public _stacks: moa.Stack[];
 
     constructor() {
-        this.stacks = [];
+        this._stacks = [];
     }
 
     /**
@@ -17,7 +17,7 @@ class Router implements moa.Router {
      * @param middleware {listener} 中间件
      */
     register(path: string, method: string, middleware: moa.listener) {
-        this.stacks.push({
+        this._stacks.push({
             path,
             method,
             middleware,
@@ -33,12 +33,12 @@ class Router implements moa.Router {
     }
 
     routes(): moa.listener {
-        return async (ctx: Context, next: moa.listener) => {
+        return async (ctx: moa.Context, next:() => void) => {
             const url = ctx.url === '/index' ? '/' : ctx.url;
-            const method = ctx.method
+            const method = ctx.method;
             let route;
-            for (let i = 0; i < this.stacks.length; i++) {
-                const item = this.stacks[i]
+            for (let i = 0; i < this._stacks.length; i++) {
+                const item = this._stacks[i]
                 if (item.path === url && item.method === method) {
                     route = item.middleware;
                     break
