@@ -4,14 +4,13 @@ import Moa from './moa';
 
 const app = new Moa();
 
-const router = app.createRoute();
-
-router.get('/test', async function (ctx: moa.Context, next: () => void) {
-    ctx.body = 'hello test!';
-    next();
+// 简化版
+app.useRoute(router => {
+    router.get('/test', async function (ctx: moa.Context, next: () => void) {
+        ctx.body = 'hello test!';
+        next();
+    });
 });
-
-app.use(router.routes());
 
 app.use(async function (ctx: moa.Context, next: () => void) {
     ctx.body += 'end';

@@ -107,6 +107,15 @@ class Moa {
         }
         return this.router;
     }
+
+    /**
+     * @description 注册路由中间件
+     */
+    useRoute(fn: (router: moa.Router) => void) {
+        const router: moa.Router = this.router || this.createRoute();
+        fn(router);
+        this.use(router.routes());
+    }
 }
 
 export default Moa;
