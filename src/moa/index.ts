@@ -5,6 +5,7 @@
  */
 import moa from 'moa';
 import http, { Server } from 'http';
+import https from 'https';
 import Context from './context';
 import Router from './router';
 
@@ -85,7 +86,7 @@ class Moa {
      * @param data {number | Array} listen 监听端口或参数
      * @param options {object} createServer 配置项
      */
-    createServer(net: Net, data: number | Array<number>, options?: http.ServerOptions): Server {
+    createServer(net: Net, data: number | Array<number>, options?: https.ServerOptions): Server {
         const listener = this.getListener();
         const server: Server = options
             ? net.createServer(options, listener)
