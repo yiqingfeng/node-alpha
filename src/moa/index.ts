@@ -21,10 +21,12 @@ interface Net {
 class Moa {
     public _middleWares: moa.listener[];
     public router: moa.Router | null;
+    public listener: http.RequestListener | null;
 
     constructor() {
         this._middleWares = [];
         this.router = null;
+        this.listener = null;
     }
 
     /**
@@ -64,9 +66,12 @@ class Moa {
 
     /**
      * @description 获取服务器监听者
-     * 便于外部创建服务器，直接使用 app 作为 listener
+     * @param {boolean} isAnother 是否需要新建
+     * 支持外部创建服务器，直接使用 app 作为 listener
      */
-    getListener(): http.RequestListener {
+    getListener(isAnother?: boolean): http.RequestListener {
+        if (!isAnother && this.listener) return this.listener;
+
         const listener: http.RequestListener = async (req, res) => {
             // 创建上下文
             const ctx: Context = this.createContext(req, res)
@@ -77,6 +82,9 @@ class Moa {
             // 响应
             res.end(ctx.body);
         };
+        if (!isAnother) {
+            this.listener = listener;
+        }
         return listener;
     }
 

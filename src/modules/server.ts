@@ -16,14 +16,6 @@ const HTTPS_PROT: number = settings.server.https.port;
  */
 function createServer() {
     const cert: Cert = ssl.getCert();
-    // let port = 443;
-    // const listener = createListener(requestHandle);
-
-    // https.createServer(cert, listener)
-    //     .listen(443, '0.0.0.0');
-    // http.createServer(listener)
-    //     .listen(80);
-
     const app = new Moa();
     app.createServer(http, HTTP_PROT);
     app.createServer(https, HTTPS_PROT, cert);
