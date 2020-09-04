@@ -3,7 +3,6 @@
  * 参考文章：https://mp.weixin.qq.com/s/PkzPJipyG80Kpm7xwOrnIA
  * 目标：简单化、流程化和模块化
  */
-import moa from 'moa';
 import http, { Server } from 'http';
 import https from 'https';
 import Context from './context';

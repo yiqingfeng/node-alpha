@@ -2,7 +2,6 @@
  * @description 请求上下文处理
  * 简化 API
  */
-import moa from 'moa';
 import http from 'http';
 
 import Request from './request';

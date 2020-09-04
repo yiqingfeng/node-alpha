@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node index.js",
         "dev": "ts-node --files src/index.ts",
-        "dev:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
+        "dev:live": "nodemon --exec ./node_modules/.bin/ts-node -- --files ./src/index.ts",
         "build": "tsc",
         "lint": "eslint src/"
     },

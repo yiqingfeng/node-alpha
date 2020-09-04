@@ -1,4 +1,5 @@
-declare module 'moa' {
+// moa 应用
+namespace moa {
     import http from 'http';
 
     interface Request {

@@ -1,8 +1,6 @@
 /**
  * @description 路由处理
  */
-import moa from 'moa';
-
 class Router implements moa.Router {
     public _stacks: moa.Stack[];
 

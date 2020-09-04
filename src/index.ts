@@ -1,5 +1,4 @@
 import http from 'http';
-import moa from 'moa';
 import Moa from './moa';
 
 const app = new Moa();
