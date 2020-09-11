@@ -14,11 +14,13 @@ const HTTPS_PROT: number = settings.server.https.port;
 /**
  * @description 创建服务器
  */
-function createServer() {
-    const cert: Cert = ssl.getCert();
+function createServer(): Moa {
+    // const cert: Cert = ssl.getCert();
     const app = new Moa();
     app.createServer(http, HTTP_PROT);
-    app.createServer(https, HTTPS_PROT, cert);
+    // app.createServer(https, HTTPS_PROT, cert);
+
+    return app;
 }
 
 export default createServer;

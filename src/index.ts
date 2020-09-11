@@ -1,19 +1,14 @@
-import http from 'http';
-import Moa from './moa';
 
-const app = new Moa();
+import createServer from './modules/server';
+import startApp from './app/index';
 
-// 简化版
-app.useRoute(router => {
-    router.get('/test', async function (ctx: moa.Context, next: () => void) {
-        ctx.body = 'hello test!';
-        next();
-    });
+const START_DATE: number = Date.now();
+
+process.on('exit', () => {
+    const now = Date.now();
+    console.log(`SYSTEM exit at ${now}, has run ${now - START_DATE} ms`);
 });
+process.on('SIGINT', () => process.exit());
 
-app.use(async function (ctx: moa.Context, next: () => void) {
-    ctx.body += 'end';
-    next();
-});
-
-app.createServer(http, 3000);
+startApp(createServer());
+console.log(`SERVER start at ${Date.now()}, use time ${Date.now() - START_DATE} ms`);

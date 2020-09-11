@@ -5,7 +5,7 @@
 import path from 'path';
 import utils from '../utils';
 
-const DOMAINS = ['fe.com', 'ceshi112.com', 'fxiaoke.com'];
+const DOMAINS: string[] = ['fe.com', 'ceshi112.com', 'fxiaoke.com'];
 
 const ECA = {
     key: `
@@ -72,7 +72,7 @@ function registerHosts(domain: string) {
 function checkVersion(): number {
     const base: string[] = '1.0.1'.split('.');
     let version: string = utils.cpExec('openssl version').data;
-    version = (version.match(/\bopenssl[^\d]+([\d|\.]+)/i) || [])[1] || '';
+    version = (version.match(/\bopenssl[^\d]+([\d|\.]+)/i) || [])[1] || ''; // eslint-disable-line  no-useless-escape
     // 判断当前 openssl 版本是否高于指定基础版本
     return version.split('.')
         .reduce((sum, item, index) => {
@@ -167,18 +167,14 @@ function exportCert(fileName = 'cert.crt', cert: Cert = {
     cert: ECA.cert,
     key: undefined,
 }) {
-    function getPath(name: string): string {
-        return path.join(__dirname, '../../', name);
-    }
-
     if (cert.cert) {
-        // utils.writeFstr([__dirname, fileName], cert.cert);
+        utils.writeFile(utils.getPath(fileName), cert.cert);
     }
     if (cert.key) {
         const keyName = fileName.replace(/(\.[^.]+$)|($)/, '.key');
-        // utils.writeFstr([__dirname, keyName], cert.key);
+        utils.writeFile(utils.getPath(keyName), cert.key);
     }
-    const certPath = path.join(__dirname, '../../', fileName);
+    // const certPath = path.join(__dirname, '../../', fileName);
     // cert.cert && utils.writeFstr([__dirname, fileName], cert.cert);
     // cert.key && utils.writeFstr([__dirname, keyName], cert.key);
 }
