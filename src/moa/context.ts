@@ -34,6 +34,11 @@ class ContextClass implements moa.Context {
     get method(): string {
         return this.request.method;
     }
+
+    end(content: String | Buffer): ContextClass {
+        this.res.end(content);
+        return this;
+    }
 }
 
 export default ContextClass;
