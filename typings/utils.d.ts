@@ -1,4 +1,3 @@
-export declare interface resData<T> {
-    errCode: number | string;
-    data: T;
+declare interface comMap<T> {
+    [propName: string]: T;
 }

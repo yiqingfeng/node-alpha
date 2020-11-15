@@ -1,12 +1,11 @@
 /**
  * @description https ssl 本地自证书
  */
-import fs from 'fs';
 import utils from '../utils';
 
 const DOMAINS: string[] = ['fe.com', 'ceshi112.com', 'fxiaoke.com'];
-const KEY_NAME: string = 'key.pem';
-const CERT_NAME: string = 'cert.pem';
+const KEY_NAME = 'key.pem';
+const CERT_NAME = 'cert.pem';
 
 /**
  * @description 证书是否存在
@@ -55,19 +54,18 @@ function getCert(domains ?: string | string[]): Cert {
  * @description 注册 hosts 文件
  * @param {string} domain 域名
  */
-function registerHosts(domain: string) {
-    // let hostsPath = '/etc/hosts'; // hosts 文件地址
-}
+// function registerHosts(domain: string) {
+//     // let hostsPath = '/etc/hosts'; // hosts 文件地址
+// }
 
 /**
  * @description 设置指定域名到hosts中
  */
-function setHosts(domain: string | string[]) {
+// function setHosts(domain: string | string[]) {
 
-}
-
+// }
 
 export default {
     getCert,
-    setHosts,
+    // setHosts,
 }

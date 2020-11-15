@@ -6,6 +6,8 @@ namespace moa {
         req: http.IncomingMessage;
         url: string;
         method: string;
+        protocol: string;
+        domain: string;
         [propName: string]: any;
     }
 

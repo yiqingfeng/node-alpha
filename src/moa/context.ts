@@ -10,6 +10,7 @@ import Response from './response';
 class ContextClass implements moa.Context {
     request: moa.Request;
     response: moa.Response;
+    _data: Record<string, unknown>;
 
     constructor(public req: http.IncomingMessage, public res: http.ServerResponse) {
         this.request = new Request(req);
@@ -17,6 +18,7 @@ class ContextClass implements moa.Context {
         // 保留原始数据
         this.req = req;
         this.res = res;
+        this._data = {};
     }
 
     get body(): string {
@@ -35,7 +37,15 @@ class ContextClass implements moa.Context {
         return this.request.method;
     }
 
-    end(content: String | Buffer): ContextClass {
+    set(key: string, value: any) {
+        this._data[key] = value;
+    }
+
+    get(key: string): any {
+        return this._data[key];
+    }
+
+    end(content: string | Buffer): ContextClass {
         this.res.end(content);
         return this;
     }

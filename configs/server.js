@@ -7,7 +7,7 @@ module.exports = {
         port: 80,
     },
     https: {
-        // port: 3346,
-        port: 443,
+        port: 3346,
+        // port: 443,
     },
 };
