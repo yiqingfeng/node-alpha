@@ -15,6 +15,7 @@ const HTTPS_PROT: number = settings.server.https.port;
  * @description 创建服务器
  */
 function createServer(): Moa {
+    ssl.registerHosts();
     const cert: Cert = ssl.getCert();
     const app = new Moa();
     app.createServer(http, HTTP_PROT);

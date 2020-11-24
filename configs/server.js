@@ -3,8 +3,8 @@
  */
 module.exports = {
     http: {
-        // port: 3345,
-        port: 80,
+        port: 3345,
+        // port: 80,
     },
     https: {
         port: 3346,

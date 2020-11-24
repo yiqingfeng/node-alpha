@@ -3,5 +3,6 @@
  * - 404 资源页
  */
 export default async function (ctx: moa.Context, next: () => void) {
-    ctx.response.end();
+    // ctx.response.end();
+    next();
 }
