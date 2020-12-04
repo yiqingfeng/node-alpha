@@ -45,9 +45,13 @@ class ContextClass implements moa.Context {
         return this._data[key];
     }
 
-    end(content: string | Buffer): ContextClass {
+    end(content: string | Buffer) {
         this.res.end(content);
-        return this;
+    }
+
+    endCode(code: number) {
+        this.res.statusCode = code;
+        this.res.end();
     }
 }
 

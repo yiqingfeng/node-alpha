@@ -8,10 +8,30 @@ import https from 'https';
 /**
  * @description 获取代理资源的参数配置
  */
-function getRequestOptions(ctx: moa.Context) {
-    return {
+function proxyRequest(ctx: moa.Context, options: https.RequestOptions) {
+    return new Promise((resolve, reject) => {
+        const preq = (ctx.request.protocol === 'https:' ? https : http)
+            .request(options, pres => {
+                ctx.response.statusCode = pres.statusCode;
+                // 设置 cookie 域名
+                const chunks: Buffer[] = [];
+                pres.on('data', (buff) => chunks.push(buff));
+                pres.on('end', () => {
+                    const buffs = Buffer.concat(chunks);
+                    // ctx.end(buffs);
+                    resolve(buffs);
+                });
+            });
+        ctx.req.pipe(preq);
 
-    }
+        preq.on('error', (err) => {
+            console.log('代理请求失败：', err.toString());
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject(404);
+        });
+
+        ctx.set('preq', preq);
+    });
 }
 
 /**

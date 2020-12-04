@@ -25,6 +25,9 @@ namespace moa {
         body: string;
         url: string;
         method: string;
+        set: (key: string, value: any) => void;
+        get: (key: string) => any;
+        end: (content: string | Buffer) => void;
     }
 
     export type listener = (ctx: Context, next: () => void) => void;

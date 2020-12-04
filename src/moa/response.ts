@@ -18,21 +18,24 @@ class Response {
     }
 
     // headers 设置
-    set(field: string | comMap<string>, value: string | string[]) {
-        if (typeof field === 'object') {
-            for (const key in field) {
-                this.set(key, field[key]);
+    set(name: string | comMap<string>, value: string | string[]) {
+        if (typeof name === 'object') {
+            for (const key in name) {
+                this.set(key, name[key]);
             }
         } else {
-            this.res.setHeader(field, value);
+            this.res.setHeader(name, value);
         }
         return this;
     }
 
     // headers 获取
-    // get() {
-
-    // }
+    get(name ?: string): string | number | string[] | undefined | http.OutgoingHttpHeaders {
+        if (name) {
+            return this.res.getHeader(name);
+        }
+        return this.res.getHeaders();
+    }
 }
 
 export default Response;
